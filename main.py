@@ -7,10 +7,6 @@ from bs4 import BeautifulSoup
 from state_links import get_month_links
 
 # TODO
-#   The double 'for' loop causes ~80,000 entries into the approved list. Fix this so entries are unique based
-#   on url.
-#   The current method to remove duplicates takes exponentially longer each loop due to O(n^2) processing time.
-#   Place loop outside of initial 'for' loop to decrease processing time.
 #   Make functions more dynamic... allow variable entries for class_, id {}, and find_all(' ')
 #   Allow exporting to .xlsx and .json
 #   General optimization
@@ -46,9 +42,12 @@ class ScraperMain:
 
     def find_articles(self):
         # call lists
+        approved_final = []
         dates = []
         approved_initial = []
         data_collated = []
+        url = {}
+        url = set(url)
         # import initial links to each month from state_links.py
         link_index = get_month_links(self.links)
 
@@ -80,31 +79,23 @@ class ScraperMain:
                 if any(word in sublist[0] for word in keywords):
                     approved_initial.append(sublist)
 
-            # FIXME obsolete functions
+            for i in approved_initial:
+                url.add(i[2])
+
+            for j in url:
+                for k in data_collated:
+                    if j == k[2]:
+                        if k in approved_final:
+                            pass
+                        else:
+                            approved_final.append(k)
+
             dates.clear()
             flattened_list.clear()
 
         print("Web scraping completed, now removing duplicates.")
         # remove duplicate items.
-        return approved_initial
-    """
-    def remove_duplicates(self):
-        approved_l1 = self.find_articles()
-        #use a set to find unique urls
-        #for x in approved: if any(url) in x: approved.final.append(x)
-        approved_final = []
-        url = {}
-        url = set(url)
-
-        for x in approved_l1:
-            url.add(x[2])
-
-        for j in approved_l1:
-            if any(link in j[2] for link in url):
-                approved_final.append(j)
-
         return approved_final
-    """
 
     def output_to_csv(self):
         final = self.find_articles()
