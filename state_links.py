@@ -1,16 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-import re
-import pandas as pd
 
-state_links = ["https://2009-2017.state.gov/r/pa/prs/ps/2009/index.htm",
-               "https://2009-2017.state.gov/r/pa/prs/ps/2010/index.htm",
-               "https://2009-2017.state.gov/r/pa/prs/ps/2011/index.htm",
-               "https://2009-2017.state.gov/r/pa/prs/ps/2012/index.htm",
-               "https://2009-2017.state.gov/r/pa/prs/ps/2013/index.htm",
-               "https://2009-2017.state.gov/r/pa/prs/ps/2014/index.htm",
-               "https://2009-2017.state.gov/r/pa/prs/ps/2015/index.htm",
-               "https://2009-2017.state.gov/r/pa/prs/ps/2016/index.htm"]
 
 data_collated = []
 def get_month_links(link_list):
